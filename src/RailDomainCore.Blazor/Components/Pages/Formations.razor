@@ -1,0 +1,67 @@
+@page "/formations"
+@using RailDomainCore.Formations
+@using Volo.Abp.Domain.Repositories
+@inject IReadOnlyRepository<Formation, Guid> FormationRepository
+
+<PageTitle>Formations</PageTitle>
+
+<h1>Formation 列表</h1>
+
+@if (_errorMessage is not null)
+{
+    <div class="alert alert-danger" role="alert">@_errorMessage</div>
+}
+else if (_loading)
+{
+    <p>加载中...</p>
+}
+else if (_items.Count == 0)
+{
+    <div class="alert alert-secondary" role="alert">暂无 Formation 数据。</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>VersionId</th>
+                <th>TrainId</th>
+                <th>CoachCount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items.OrderBy(x => x.Code))
+            {
+                <tr>
+                    <td>@item.Code</td>
+                    <td>@item.VersionId</td>
+                    <td>@item.TrainId</td>
+                    <td>@item.CoachCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<Formation> _items = [];
+    private bool _loading = true;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _items = await FormationRepository.GetListAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}

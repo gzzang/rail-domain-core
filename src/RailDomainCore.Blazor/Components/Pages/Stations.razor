@@ -1,0 +1,63 @@
+@page "/stations"
+@using RailDomainCore.Stations
+@using Volo.Abp.Domain.Repositories
+@inject IReadOnlyRepository<Station, Guid> StationRepository
+
+<PageTitle>Stations</PageTitle>
+
+<h1>Station 列表</h1>
+
+@if (_errorMessage is not null)
+{
+    <div class="alert alert-danger" role="alert">@_errorMessage</div>
+}
+else if (_loading)
+{
+    <p>加载中...</p>
+}
+else if (_items.Count == 0)
+{
+    <div class="alert alert-secondary" role="alert">暂无 Station 数据。</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items.OrderBy(x => x.Code))
+            {
+                <tr>
+                    <td>@item.Code</td>
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<Station> _items = [];
+    private bool _loading = true;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _items = await StationRepository.GetListAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}

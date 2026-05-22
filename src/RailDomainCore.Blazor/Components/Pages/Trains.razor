@@ -1,0 +1,75 @@
+@page "/trains"
+@using RailDomainCore.Trains
+@using Volo.Abp.Domain.Repositories
+@inject IReadOnlyRepository<Train, Guid> TrainRepository
+@inject IReadOnlyRepository<TrainStation, Guid> TrainStationRepository
+
+<PageTitle>Trains</PageTitle>
+
+<h1>Train 列表</h1>
+
+@if (_errorMessage is not null)
+{
+    <div class="alert alert-danger" role="alert">@_errorMessage</div>
+}
+else if (_loading)
+{
+    <p>加载中...</p>
+}
+else if (_items.Count == 0)
+{
+    <div class="alert alert-secondary" role="alert">暂无 Train 数据。</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>VersionId</th>
+                <th>StationCount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _items.OrderBy(x => x.Number))
+            {
+                <tr>
+                    <td>@item.Number</td>
+                    <td>@item.Name</td>
+                    <td>@item.VersionId</td>
+                    <td>@GetStationCount(item.Id)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<Train> _items = [];
+    private IReadOnlyDictionary<Guid, int> _stationCountByTrain = new Dictionary<Guid, int>();
+    private bool _loading = true;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _items = await TrainRepository.GetListAsync();
+            var stations = await TrainStationRepository.GetListAsync();
+            _stationCountByTrain = stations
+                .GroupBy(x => x.TrainId)
+                .ToDictionary(x => x.Key, x => x.Count());
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private int GetStationCount(Guid trainId) => _stationCountByTrain.GetValueOrDefault(trainId);
+}
