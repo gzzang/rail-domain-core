@@ -1,0 +1,46 @@
+@page "/"
+
+<PageTitle>RailDomainCore</PageTitle>
+
+<h1>RailDomainCore</h1>
+
+<p class="lead">ABP + .NET 10 + Blazor Server 的铁路领域核心示例。</p>
+
+<div class="row g-4 mt-1">
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Version</h2>
+                <p class="mb-0">单实体聚合，统一管理 Train、Formation、Route 的版本归属。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Train</h2>
+                <p class="mb-0">聚合根内部包含 TrainStation 子实体，描述经停站顺序与时刻偏移。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Formation</h2>
+                <p class="mb-0">与 Train 一对多绑定，表达列车编组方案。</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Route</h2>
+                <p class="mb-0">分别关联 Train 与 Formation，表示运行路径与起终点。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-secondary mt-4 mb-0" role="alert">
+    Station 作为独立仓储共享实体，可被多个聚合复用；当前配置为单租户、PostgreSQL、Docker 友好部署。
+</div>
