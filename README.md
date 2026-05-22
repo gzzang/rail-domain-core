@@ -88,5 +88,5 @@ docker compose up --build
 - `/home/runner/work/rail-domain-core/rail-domain-core/.github/workflows/cd.yml`
   - 由 `ci` 成功后触发
   - 仅在 `main` / `master` 分支执行
-  - 运行于本地自托管 Runner
+  - 运行于本地自托管 Windows x64 Runner
   - 通过 `docker compose up -d --build --remove-orphans` 执行部署

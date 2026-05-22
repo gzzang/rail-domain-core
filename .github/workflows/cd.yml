@@ -20,7 +20,8 @@ jobs:
       }}
     runs-on:
       - self-hosted
-      - linux
+      - windows
+      - x64
 
     steps:
       - name: Checkout
@@ -29,4 +30,5 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Deploy with Docker Compose
+        shell: pwsh
         run: docker compose up -d --build --remove-orphans
