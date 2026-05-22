@@ -3,16 +3,12 @@ name: ci
 on:
   push:
     branches:
-      - main
-      - master
-      - copilot/**
+      - "**"
   pull_request:
 
 jobs:
   build-test:
-    runs-on:
-      - self-hosted
-      - linux
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout

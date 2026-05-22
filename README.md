@@ -1,6 +1,6 @@
 # RailDomainCore
 
-RailDomainCore 是一个基于 **.NET 10**、**ABP**、**DDD 分层架构** 的示例项目，默认 UI 为 **Blazor Server**，数据库为 **PostgreSQL**，并提供 **Docker** 与 **GitHub Actions 自托管运行器** 的基础 CI/CD 设计。
+RailDomainCore 是一个基于 **.NET 10**、**ABP**、**DDD 分层架构** 的示例项目，默认 UI 为 **Blazor Server**，数据库为 **PostgreSQL**，并提供 **Docker**、**GitHub Actions 托管 CI** 与 **本地自托管 Runner CD** 的基础流水线设计。
 
 ## 技术栈
 
@@ -10,7 +10,7 @@ RailDomainCore 是一个基于 **.NET 10**、**ABP**、**DDD 分层架构** 的�
 - EF Core + PostgreSQL
 - xUnit
 - Docker / Docker Compose
-- GitHub Actions（self-hosted）
+- GitHub Actions（CI: GitHub-hosted / CD: self-hosted）
 
 ## 数据库约定
 
@@ -79,8 +79,14 @@ docker compose up --build
 
 ## CI/CD
 
-仓库内置 `/home/runner/work/rail-domain-core/rail-domain-core/.github/workflows/ci.yml`：
+仓库内置以下工作流：
 
-- 运行于 GitHub 官方 self-hosted runner 标签
-- 执行 restore / build / test
-- 验证 Docker 镜像可构建
+- `/home/runner/work/rail-domain-core/rail-domain-core/.github/workflows/ci.yml`
+  - 运行于 GitHub 托管 `ubuntu-latest`
+  - 执行 restore / build / test
+  - 验证 Docker 镜像可构建
+- `/home/runner/work/rail-domain-core/rail-domain-core/.github/workflows/cd.yml`
+  - 由 `ci` 成功后触发
+  - 仅在 `main` / `master` 分支执行
+  - 运行于本地自托管 Runner
+  - 通过 `docker compose up -d --build --remove-orphans` 执行部署
