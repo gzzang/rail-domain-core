@@ -50,11 +50,11 @@ public static class RailDomainCoreModelBuilderExtensions
         builder.Property(x => x.Number).IsRequired().HasMaxLength(32);
         builder.Property(x => x.Name).IsRequired().HasMaxLength(128);
         builder.HasIndex(x => new { x.VersionId, x.Number }).IsUnique();
-        builder.Navigation("_stations").UsePropertyAccessMode(PropertyAccessMode.Field);
         builder.HasMany<TrainStation>("_stations")
             .WithOne()
             .HasForeignKey(x => x.TrainId)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.Navigation("_stations").UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 
     private static void ConfigureTrainStation(EntityTypeBuilder<TrainStation> builder)
