@@ -72,8 +72,8 @@ docker compose up --build
 
 将启动：
 
-- `postgres:18.3-alpine`
-- `redis:8.6.1-alpine`
+- `postgres:18.4-alpine`
+- `redis:8.6-alpine`
 - `rail-domain-core-migrator`
 - `rail-domain-core-blazor`
 
