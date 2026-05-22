@@ -15,7 +15,8 @@ public class RailDomainCoreDbContextFactory : IDesignTimeDbContextFactory<RailDo
 
     private static string GetConnectionStringFromArgs(string[] args)
     {
-        // Allow passing connection string via --connection argument at design time.
+        // Allow passing connection string via --connection argument at design time:
+        //   dotnet ef migrations add MyMigration -- --connection "Host=...;..."
         for (var i = 0; i < args.Length - 1; i++)
         {
             if (args[i].Equals("--connection", StringComparison.OrdinalIgnoreCase))
@@ -24,6 +25,16 @@ public class RailDomainCoreDbContextFactory : IDesignTimeDbContextFactory<RailDo
             }
         }
 
-        return "Host=localhost;Port=5432;Database=RailDomainCore;Username=postgres;Password=postgres";
+        // Fall back to the CONNECTIONSTRINGS__DEFAULT environment variable so that
+        // credentials are never hard-coded in source code.
+        var envConnectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__DEFAULT");
+        if (!string.IsNullOrWhiteSpace(envConnectionString))
+        {
+            return envConnectionString;
+        }
+
+        throw new InvalidOperationException(
+            "No connection string found for design-time migration. " +
+            "Pass one via '--connection <connStr>' or set the CONNECTIONSTRINGS__DEFAULT environment variable.");
     }
 }
