@@ -22,6 +22,9 @@ jobs:
       - self-hosted
       - windows
       - x64
+    env:
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PWD: ${{ secrets.DB_PWD }}
 
     steps:
       - name: Checkout

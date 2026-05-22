@@ -17,8 +17,8 @@ RailDomainCore 是一个基于 **.NET 10**、**ABP**、**DDD 分层架构** 的�
 - 正式库：`rail_domain_core`
 - 开发库：`rail_domain_core_dev`
 - 测试库：`rail_domain_core_test`
-- 用户名：`gzzang`
-- 密码：`zz123123`
+- 用户名：通过环境变量 `DB_USER` 提供
+- 密码：通过环境变量 `DB_PWD` 提供
 
 默认连接串位于：
 
@@ -89,4 +89,5 @@ docker compose up --build
   - 由 `ci` 成功后触发
   - 仅在 `main` / `master` 分支执行
   - 运行于本地自托管 Windows x64 Runner
+  - 从 Actions Variables / Secrets 读取 `DB_USER` / `DB_PWD`
   - 通过 `docker compose up -d --build --remove-orphans` 执行部署
