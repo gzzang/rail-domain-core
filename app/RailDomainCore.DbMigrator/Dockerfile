@@ -12,7 +12,10 @@ RUN dotnet restore "app/RailDomainCore.DbMigrator/RailDomainCore.DbMigrator.cspr
 COPY . .
 RUN dotnet publish "app/RailDomainCore.DbMigrator/RailDomainCore.DbMigrator.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libgssapi-krb5-2 \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "RailDomainCore.DbMigrator.dll"]
