@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore RailDomainCore.slnx
+
+      - name: Build
+        run: dotnet build RailDomainCore.slnx -c Release --no-restore
+
+      - name: Test
+        run: dotnet test RailDomainCore.slnx -c Release --no-build
+
+      - name: Build docker images
+        run: docker compose build --pull

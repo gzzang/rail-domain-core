@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/app/">
+    <Project Path="app/RailDomainCore.DbMigrator/RailDomainCore.DbMigrator.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/RailDomainCore.Application.Contracts/RailDomainCore.Application.Contracts.csproj" />
+    <Project Path="src/RailDomainCore.Application/RailDomainCore.Application.csproj" />
+    <Project Path="src/RailDomainCore.Blazor/RailDomainCore.Blazor.csproj" />
+    <Project Path="src/RailDomainCore.Domain.Shared/RailDomainCore.Domain.Shared.csproj" />
+    <Project Path="src/RailDomainCore.Domain/RailDomainCore.Domain.csproj" />
+    <Project Path="src/RailDomainCore.EntityFrameworkCore/RailDomainCore.EntityFrameworkCore.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/RailDomainCore.Domain.Tests/RailDomainCore.Domain.Tests.csproj" />
+  </Folder>
+</Solution>
