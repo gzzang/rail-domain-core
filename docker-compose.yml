@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:18.3-alpine
+    image: postgres:18.4-alpine
     environment:
       POSTGRES_USER: gzzang
       POSTGRES_PASSWORD: zz123123
@@ -11,7 +11,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   redis:
-    image: redis:8.6.1-alpine
+    image: redis:8.6-alpine
     ports:
       - "6379:6379"
 
